@@ -14,7 +14,8 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  TextField
+  TextField,
+  Tab
 } from "@mui/material";
 
 export default function Home() {
@@ -92,6 +93,16 @@ export default function Home() {
     return true;
   };
 
+  const handleSortByYear = () => {
+  const sorted = [...items].sort((a, b) => {
+    const yearA = Number(a.an);
+    const yearB = Number(b.an);
+    return yearA - yearB;
+  });
+  setItems(sorted);
+};
+
+
   return (
     <Container style={{ marginTop: 40 }}>
       <Typography variant="h4" gutterBottom>
@@ -112,6 +123,11 @@ export default function Home() {
             <TableCell>An</TableCell>
             <TableCell>Actions</TableCell>
             <TableCell>Update</TableCell>
+            <TableCell>
+                <Button variant="contained" onClick={handleSortByYear} style={{ marginLeft: 10 }}>
+                  Sort by Year
+                </Button>
+              </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -133,6 +149,8 @@ export default function Home() {
                   Update
                 </Button>
               </TableCell>
+              
+
             </TableRow>
           ))}
         </TableBody>
