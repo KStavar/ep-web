@@ -1,5 +1,6 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
 import {
   Container,
   Button,
@@ -24,8 +25,9 @@ export default function Home() {
   const [openUpdate, setOpenUpdate] = useState(false);
 
 
+
   const handleAdd = () => {
-    if (!form.titlu) return;
+    if (!validateForm()) return;
     setItems([...items, { ...form, id: Date.now() }]);
     setForm({ titlu: "", gen: "", rating: "", an: "" });
     setOpen(false);
@@ -48,14 +50,46 @@ export default function Home() {
   };
 
   const handleUpdateSave = () => {
+    if (!validateForm()) return;
     setItems(
       items.map((i) =>
         i.id === editId ? { ...i, ...form } : i
       )
     );
-    setForm({ titlu: " ", gen: " ", rating: " ", an: " " });
+    setForm({ titlu: "", gen: "", rating: "", an: "" });
     setEditId(null);
     setOpenUpdate(false);
+  };
+
+  useEffect(() => {
+    const data = localStorage.getItem("items");
+    if (data) setItems(JSON.parse(data));
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("items", JSON.stringify(items));
+  }, [items]);
+
+  const validateForm = () => {
+    if (!form.titlu.trim()) {
+      alert("Titlu nu poate fi gol!");
+      return false;
+    }
+    if (!form.gen.trim()) {
+      alert("Gen nu poate fi gol!");
+      return false;
+    }
+    const ratingNum = Number(form.rating);
+    if (isNaN(ratingNum) || ratingNum < 1 || ratingNum > 10) {
+      alert("Rating trebuie să fie un număr între 1 și 10!");
+      return false;
+    }
+    const yearNum = Number(form.an);
+    if (isNaN(yearNum) || form.an.length !== 4) {
+      alert("An trebuie să fie un an valid (ex: 2024)!");
+      return false;
+    }
+    return true;
   };
 
   return (
