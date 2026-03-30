@@ -17,7 +17,7 @@ import {
 } from "@mui/material";
 
 export default function Home() {
- const [items, setItems] = useState([]);
+  const [items, setItems] = useState([]);
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState({ titlu: "", gen: "", rating: "", an: "" });
 
@@ -26,6 +26,10 @@ export default function Home() {
     setItems([...items, { ...form, id: Date.now() }]);
     setForm({ titlu: "", gen: "", rating: "", an: "" });
     setOpen(false);
+  };
+
+  const handleDelete = (id) => {
+    setItems(items.filter((item) => item.id !== id));
   };
 
   return (
@@ -59,7 +63,10 @@ export default function Home() {
               <TableCell>{item.rating}</TableCell>
               <TableCell>{item.an}</TableCell>
               <TableCell>
-                <Button color="error">Delete</Button>
+                <Button color="error" onClick={() => handleDelete(item.id)}>
+                  Delete
+                </Button>
+
               </TableCell>
               <TableCell>
                 <Button>Update</Button>
@@ -68,7 +75,7 @@ export default function Home() {
           ))}
         </TableBody>
       </Table>
-      
+
       <Dialog open={open} onClose={() => setOpen(false)}>
         <DialogTitle>Add Item</DialogTitle>
         <DialogContent>
