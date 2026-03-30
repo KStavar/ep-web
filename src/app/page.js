@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-
+import { H4Customed } from "./styled";
 import {
   Container,
   Button,
@@ -24,8 +24,6 @@ export default function Home() {
   const [form, setForm] = useState({ titlu: "", gen: "", rating: "", an: "" });
   const [editId, setEditId] = useState(null);
   const [openUpdate, setOpenUpdate] = useState(false);
-
-
 
   const handleAdd = () => {
     if (!validateForm()) return;
@@ -80,6 +78,11 @@ export default function Home() {
       alert("Gen nu poate fi gol!");
       return false;
     }
+    if (!/^[A-Za-z]+$/.test(form.gen.trim())) {
+      alert("Gen trebuie să contina doar litere latine!");
+      return false;
+    }
+
     const ratingNum = Number(form.rating);
     if (isNaN(ratingNum) || ratingNum < 1 || ratingNum > 10) {
       alert("Rating trebuie să fie un număr între 1 și 10!");
@@ -105,13 +108,18 @@ export default function Home() {
 
   return (
     <Container style={{ marginTop: 40 }}>
-      <Typography variant="h4" gutterBottom>
-        CRUD
-      </Typography>
+      <H4Customed variant="h4" gutterBottom>
+        CRUD - Filme
+      </H4Customed>
 
       <Button variant="contained" onClick={() => setOpen(true)}>
         Add Item
       </Button>
+
+      <Button variant="contained" onClick={handleSortByYear} style={{ marginLeft: 10 }}>
+        Sort by Year
+      </Button>
+
 
       <Table style={{ marginTop: 20 }}>
         <TableHead>
@@ -123,13 +131,10 @@ export default function Home() {
             <TableCell>An</TableCell>
             <TableCell>Actions</TableCell>
             <TableCell>Update</TableCell>
-            <TableCell>
-                <Button variant="contained" onClick={handleSortByYear} style={{ marginLeft: 10 }}>
-                  Sort by Year
-                </Button>
-              </TableCell>
+          
           </TableRow>
         </TableHead>
+
         <TableBody>
           {items.map((item) => (
             <TableRow key={item.id}>
@@ -149,10 +154,9 @@ export default function Home() {
                   Update
                 </Button>
               </TableCell>
-              
-
             </TableRow>
           ))}
+
         </TableBody>
       </Table>
 
@@ -166,6 +170,7 @@ export default function Home() {
             value={form.titlu}
             onChange={(e) => setForm({ ...form, titlu: e.target.value })}
           />
+
           <TextField
             label="Gen"
             fullWidth
@@ -173,6 +178,7 @@ export default function Home() {
             value={form.gen}
             onChange={(e) => setForm({ ...form, gen: e.target.value })}
           />
+
           <TextField
             label="Rating"
             fullWidth
@@ -180,6 +186,7 @@ export default function Home() {
             value={form.rating}
             onChange={(e) => setForm({ ...form, rating: e.target.value })}
           />
+
           <TextField
             label="An"
             fullWidth
@@ -187,7 +194,9 @@ export default function Home() {
             value={form.an}
             onChange={(e) => setForm({ ...form, an: e.target.value })}
           />
+
         </DialogContent>
+
         <DialogActions>
           <Button onClick={() => setOpen(false)}>Cancel</Button>
           <Button onClick={handleAdd} variant="contained">Save</Button>
@@ -204,6 +213,7 @@ export default function Home() {
             value={form.titlu}
             onChange={(e) => setForm({ ...form, titlu: e.target.value })}
           />
+
           <TextField
             label="Gen"
             fullWidth
@@ -211,6 +221,7 @@ export default function Home() {
             value={form.gen}
             onChange={(e) => setForm({ ...form, gen: e.target.value })}
           />
+
           <TextField
             label="Rating"
             fullWidth
@@ -218,6 +229,7 @@ export default function Home() {
             value={form.rating}
             onChange={(e) => setForm({ ...form, rating: e.target.value })}
           />
+
           <TextField
             label="An"
             fullWidth
@@ -225,6 +237,7 @@ export default function Home() {
             value={form.an}
             onChange={(e) => setForm({ ...form, an: e.target.value })}
           />
+
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setOpenUpdate(false)}>Cancel</Button>
